@@ -15,7 +15,8 @@ export default function Router() {
           <Route exact path="/signup" element={<SignUp/>} />
           <Route exact path="/signin" element={<SignIn/>} />
           <Route exact path="/details" element={<Details/>} />
-          <Route exact path="*" element={<Error/>} />
+          <Route exact path="*" element={<Error/>} /> {/* if user give improper path Error will show  */}
+          
         </Routes>
       </BrowserRouter>
     </div>
