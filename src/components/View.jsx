@@ -6,6 +6,7 @@ import Modal from "react-bootstrap/Modal";
 import EdiText from "react-editext";
 
 export default function View() {
+  ///initializing old value
   let initValue;
 
   if (localStorage.getItem("users")) {
@@ -15,9 +16,14 @@ export default function View() {
   }
 
   const [details, setDetails] = useState(initValue);
+
+  //history to navigate another page
   const history = useNavigate();
+
+  //login session
   const [login, setLogin] = useState([]);
 
+  //checking user for login
   const CheckUser = () => {
     const getUser = localStorage.getItem("usersignin");
     if (getUser && getUser.length) {
@@ -30,15 +36,29 @@ export default function View() {
     }
   };
 
+  //user logout
   const userLogout = () => {
     localStorage.removeItem("usersignin");
     history("/signin");
   };
 
-  const [modalShow, setModalShow] = useState(false);
+  //For Popup Modals
+  const [modalShowView, setModalShowView] = useState(false);
+  const [modalShowEdit, setModalShowEdit] = useState(false);
+
   const [modalId, setModelid] = useState(0);
 
-  function ViewModal(props) {
+  const [id, setId] = useState(0);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  function ViewDiv(props) {
+    setId(details[modalId].details.id);
+    setName(details[modalId].details.name);
+    setEmail(details[modalId].details.email);
+    setPassword(details[modalId].details.password);
+
     return (
       <Modal
         {...props}
@@ -48,7 +68,7 @@ export default function View() {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Details of {details[modalId].details.email}
+            Details of {email}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -63,10 +83,10 @@ export default function View() {
             </thead>
             <tbody>
               <tr>
-                <td>{details[modalId].details.id}</td>
-                <td>{details[modalId].details.name}</td>
-                <td>{details[modalId].details.email}</td>
-                <td>{details[modalId].details.password}</td>
+                <td>{id}</td>
+                <td>{name}</td>
+                <td>{email}</td>
+                <td>{password}</td>
               </tr>
             </tbody>
           </Table>
@@ -79,15 +99,39 @@ export default function View() {
   }
 
   const handleView = (i) => {
-    setModalShow(true);
+    setModalShowView(true);
     setModelid(i);
   };
 
-  function EditModal(props) {
-    const [id, setId] = useState(0);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const saveEdit = () => {
+    if (password.length < 4) {
+      alert("passwaord should be more than 4 character ");
+    } else {
+      let details = {
+        id: id,
+        name: name,
+        email: email,
+        password: password,
+      };
+      let detail = { email: email, details };
+      //setDetails([...details[modalId], detail]);
+      console.log(detail);
+      alert("Details Updated Successfully \nCLick on View Details Button");
+    }
+  };
+
+  const seteId = (val) => {
+    setId(val);
+  };
+
+  function EditDiv(props) {
+    let editdetails = {
+      id: id,
+      name: name,
+      email: email,
+      password: password,
+    };
+    //console.log(editdetails);
 
     return (
       <Modal
@@ -98,7 +142,7 @@ export default function View() {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Edit {details[modalId].details.email}
+            Edit : {details[modalId].details.email}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -113,23 +157,59 @@ export default function View() {
             </thead>
             <tbody>
               <tr>
-                <td><EdiText type='number' onChange={(e) => setId(e.target.value)} value={details[modalId].details.id} /></td>
-                <td><EdiText type='text' onChange={(e) => setName(e.target.value)} value={details[modalId].details.name} /></td>
-                <td><EdiText type='email' onChange={(e) => setEmail(e.target.value)} value={details[modalId].details.email} /></td>
-                <td><EdiText type='password' onChange={(e) => setPassword(e.target.value)} value={details[modalId].details.password} /></td>
+                <td>
+                  <EdiText
+                    type="number"
+                    onChange={(e) => setId(e.target.value)}
+                    value={id}
+                    onSave={(v) => seteId(v.target.value)}
+                  />
+                </td>
+                <td>
+                  <EdiText
+                    type="text"
+                    onChange={(e) => setName(e.target.value)}
+                    value={name}
+                    onSave={(v) => setName(v.target.value)}
+                  />
+                </td>
+                <td>
+                  <EdiText
+                    type="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                    onSave={(v) => setEmail(v.target.value)}
+                  />
+                </td>
+                <td>
+                  <EdiText
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                    onSave={(v) => setPassword(v.target.value)}
+                  />
+                </td>
               </tr>
             </tbody>
           </Table>
         </Modal.Body>
         <Modal.Footer>
+          <p>Change all the data</p>
           <Button onClick={props.onHide}>Close</Button>
+          <Button
+            onClick={() => {
+              saveEdit(modalId);
+            }}
+          >
+            SaveChanges
+          </Button>
         </Modal.Footer>
       </Modal>
     );
   }
 
   const handleEdit = (i) => {
-    setModalShow(true);
+    setModalShowEdit(true);
     setModelid(i);
   };
 
@@ -141,22 +221,15 @@ export default function View() {
       localStorage.setItem("users", JSON.stringify(details));
       history("/view");
     } else {
-      flag = prompt("Enter Properly as 'yes'");
-      if (flag == "yes") {
-        details.splice(i);
-        localStorage.setItem("users", JSON.stringify(details));
-        history("/view");
-      } else {
-        alert("Enter Properly as 'yes'");
-      }
+      alert("Enter Properly as 'yes'");
     }
   };
 
   useEffect(() => {
     setDetails(JSON.parse(localStorage.getItem("users")));
-
     CheckUser();
   }, []);
+
   return (
     <>
       {login.length != 0 ? (
@@ -242,8 +315,14 @@ export default function View() {
             </tbody>
           </Table>
           <div>
-            <ViewModal show={modalShow} onHide={() => setModalShow(false)} />
-            <EditModal show={modalShow} onHide={() => setModalShow(false)} />
+            <ViewDiv
+              show={modalShowView}
+              onHide={() => setModalShowView(false)}
+            />
+            <EditDiv
+              show={modalShowEdit}
+              onHide={() => setModalShowEdit(false)}
+            />
           </div>
         </>
       ) : (
