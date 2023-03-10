@@ -78,7 +78,7 @@ export default function Details() {
   const DeleteDetails = (index) => {
     console.log(details);
     details.pop(index);
-    console.log(details);
+
     localStorage.setItem("users", JSON.stringify(details));
 
     handleCloseDelete();
@@ -120,7 +120,9 @@ export default function Details() {
                 </tr>
               </thead>
               <tbody>
-                {details.map((item, index) => {
+                {details && details.length ==0 ?"No data"
+                :
+                details.map((item, index) => {
                   return (
                     <tr>
                       <td>{index + 1}</td>
@@ -272,7 +274,8 @@ export default function Details() {
                       </td>
                     </tr>
                   );
-                })}
+                })
+                }
               </tbody>
             </Table>
           </div>

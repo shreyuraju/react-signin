@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Hearder from "./Hearder";
-import SignUp from "./SignUp";
-
+import SignIn from "./SignIn";
 
 export default function Home() {
-  
   return (
     <>
-      <SignUp/>
-
+      <SignIn />
     </>
   );
 }

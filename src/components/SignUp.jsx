@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import SignInimg from "./SignInimg";
 
 export default function SignUp() {
-    const [id, setId] = useState(0);
+  const [id, setId] = useState(0);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,8 +22,8 @@ export default function SignUp() {
   const InsertValue = (e) => {
     e.preventDefault();
     if (password == conPass) {
-      if(password.length<5 && conPass.length<5){
-        alert("passwaord should be more than 5 character ")
+      if(password.length<4 && conPass.length<4){
+        alert("passwaord should be more than 4 character ")
       } else {
         let details = {
           id: id,

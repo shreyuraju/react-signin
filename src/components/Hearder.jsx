@@ -9,7 +9,7 @@ export default function Hearder() {
     <>
       <Navbar bg="primary" variant="dark">
         <Container>
-          <Navbar.Brand href="/">Registration</Navbar.Brand>
+          <Navbar.Brand href="/">React-Form</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="/" element={<Home />}>
               Home

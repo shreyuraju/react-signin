@@ -24,10 +24,10 @@ export default function SignIn() {
     //console.log(userSignin)
 
     if (userSignin.length === 0) {
-      alert("invalid details");
+      alert("try again with valid details");
     } else {
       localStorage.setItem("usersignin", JSON.stringify(userSignin));
-      history("/details"); //Navigating to details page using useNavigate
+      history("/view"); //Navigating to details page using useNavigate
       //alert("User Signed in Successfully")
     }
 
