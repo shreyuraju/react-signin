@@ -112,7 +112,9 @@ export default function View() {
         };
         let detail = { email: email, details };
 
-        //setValue([modalId, detail])
+        value[i]= detail
+
+        setValue([...value])
 
         alert("Details Updated Successfully \nCLick on View Details Button");
       }
