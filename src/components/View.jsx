@@ -17,6 +17,28 @@ export default function View() {
 
   const [value, setValue] = useState(initValue);
 
+  //signin sessions
+  let initLoginValue;
+  if (localStorage.getItem("usersignin")) {
+    initLoginValue = JSON.parse(localStorage.getItem("usersignin"));
+  } else {
+    initLoginValue = [];
+  }
+
+  //login session
+  const [login, setLogin] = useState([]);
+  const [getUser, setUser] = useState(initLoginValue);
+  //checking user for login
+  const CheckUser = () => {
+    if (getUser && getUser.length) {
+      const user = getUser;
+      setLogin(user);
+      if (login) {
+        setTimeout(() => {}, 3000);
+      }
+    }
+  };
+
   //history to navigate another page
   const history = useNavigate();
 
@@ -199,29 +221,26 @@ export default function View() {
     let flag;
     flag = prompt("Do you want to delete  " + email + " data\nType yes");
     if (flag === "yes") {
-      value.splice(i);
-      localStorage.setItem("users", JSON.stringify(value));
-      history("/view");
-    } else {
-      alert("Enter Properly as 'yes'");
-    }
-  };
-
-  //login session
-  const [login, setLogin] = useState([]);
-
-  //checking user for login
-  const CheckUser = () => {
-    const getUser = localStorage.getItem("usersignin");
-    if (value.length > 0) {
-      if (getUser && getUser.length) {
-        const user = JSON.parse(getUser);
-        setLogin(user);
-
-        if (login) {
-          setTimeout(() => {}, 3000);
+      if (value.length > 1) {
+        value.splice(i);
+        localStorage.setItem("users", JSON.stringify(value));
+        history("/view");
+      } else {
+        if (value.length > 0) {
+          let flag = prompt(
+            "THis the last Data Available\nDo You Want CONTINUE type 'yes'"
+          );
+          if (flag) {
+            value.splice(i);
+            getUser.splice(0);
+            localStorage.setItem("usersignin", JSON.stringify(getUser));
+            localStorage.setItem("users", JSON.stringify(value));
+            history("/view");
+          }
         }
       }
+    } else {
+      alert("Enter Properly as 'yes'");
     }
   };
 
@@ -326,7 +345,9 @@ export default function View() {
           </div>
         </>
       ) : (
-        "ERROR User No Login Details"
+        <>
+          <>ERROR No User Details recored</>
+        </>
       )}
     </>
   );
