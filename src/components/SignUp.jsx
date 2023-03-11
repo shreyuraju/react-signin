@@ -25,7 +25,7 @@ export default function SignUp() {
   //inserting user data into localStorage with some Conditions
   const InsertValue = (e) => {
     e.preventDefault();
-    if (password == conPass) {
+    if (password === conPass) {
       if(password.length<4 && conPass.length<4){
         alert("passwaord should be more than 4 character ")
       } else {
@@ -109,7 +109,7 @@ export default function SignUp() {
               <input
                 type="reset"
                 className="mb-3 col-lg-8"
-                style={{ backgroundColor: "lightblue", backgroundColor:"lightblue",background:'teal',color:'white' }}
+                style={{ backgroundColor: "lightblue",background:'teal',color:'white' }}
                 value="Reset"
               />
             </form>

@@ -48,15 +48,10 @@ export default function View() {
 
   const [modalId, setModelid] = useState(0);
 
-  const [id, setId] = useState(0);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  setId(details[modalId].details.id);
-  setName(details[modalId].details.name);
-  setEmail(details[modalId].details.email);
-  setPassword(details[modalId].details.password);
+  // setId(details[modalId].details.id);
+  // setName(details[modalId].details.name);
+  // setEmail(details[modalId].details.email);
+  // setPassword(details[modalId].details.password);
 
   function ViewDiv(props) {
     return (
@@ -68,7 +63,7 @@ export default function View() {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Details of {email}
+            Details of {details[modalId].details.email}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -83,10 +78,10 @@ export default function View() {
             </thead>
             <tbody>
               <tr>
-                <td>{id}</td>
-                <td>{name}</td>
-                <td>{email}</td>
-                <td>{password}</td>
+                <td>{details[modalId].details.id}</td>
+                <td>{details[modalId].details.name}</td>
+                <td>{details[modalId].details.email}</td>
+                <td>{details[modalId].details.password}</td>
               </tr>
             </tbody>
           </Table>
@@ -103,35 +98,43 @@ export default function View() {
     setModelid(i);
   };
 
-  const saveEdit = () => {
-    if (password.length < 4) {
-      alert("passwaord should be more than 4 character ");
-    } else {
-      let details = {
-        id: id,
-        name: name,
-        email: email,
-        password: password,
-      };
-      let detail = { email: email, details };
-      //setDetails([...details[modalId], detail]);
-      console.log(detail);
-      alert("Details Updated Successfully \nCLick on View Details Button");
-    }
-  };
-
-  const seteId = (val) => {
-    setId(val);
-  };
+  const [id, setId] = useState(0);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   function EditDiv(props) {
-    let editdetails = {
+    let detailss = {
       id: id,
       name: name,
       email: email,
       password: password,
     };
-    //console.log(editdetails);
+    console.log(detailss);
+
+    const saveEdit = () => {
+      if (password.length < 4) {
+        alert("passwaord should be more than 4 character ");
+      } else {
+        let details = {
+          id: id,
+          name: name,
+          email: email,
+          password: password,
+        };
+        let detail = { email: email, details };
+
+        // details[modalId].push(detail)
+        // setDetails(JSON.parse(localStorage.setItem("users")));
+        console.log(detail);
+        // alert("Details Updated Successfully \nCLick on View Details Button");
+      }
+    };
+
+    setId(details[modalId].details.id);
+    setEmail(details[modalId].details.email);
+    setName(details[modalId].details.name);
+    setPassword(details[modalId].details.password);
 
     return (
       <Modal
@@ -160,33 +163,37 @@ export default function View() {
                 <td>
                   <EdiText
                     type="number"
+                    id="eid"
                     onChange={(e) => setId(e.target.value)}
                     value={id}
-                    onSave={(v) => seteId(v.target.value)}
+                    onSave={() => setId(id)}
                   />
                 </td>
                 <td>
                   <EdiText
                     type="text"
+                    id="ename"
                     onChange={(e) => setName(e.target.value)}
                     value={name}
-                    onSave={(v) => setName(v.target.value)}
+                    onSave={(e) => e.onSave}
                   />
                 </td>
                 <td>
                   <EdiText
                     type="email"
+                    id="eemail"
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
-                    onSave={(v) => setEmail(v.target.value)}
+                    onSave={(e) => e.onSave}
                   />
                 </td>
                 <td>
                   <EdiText
                     type="password"
+                    id="epass"
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
-                    onSave={(v) => setPassword(v.target.value)}
+                    onSave={(e) => e.onSave}
                   />
                 </td>
               </tr>
@@ -216,7 +223,7 @@ export default function View() {
   const handleDelete = (i, email) => {
     let flag;
     flag = prompt("Do you want to delete  " + email + " data\nType yes");
-    if (flag == "yes") {
+    if (flag === "yes") {
       details.splice(i);
       localStorage.setItem("users", JSON.stringify(details));
       history("/view");
@@ -232,7 +239,7 @@ export default function View() {
 
   return (
     <>
-      {login.length != 0 ? (
+      {login.length !== 0 ? (
         <>
           <h2 style={{ textAlign: "center" }}>User Details</h2>
           <Table striped bordered hover>
