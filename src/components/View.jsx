@@ -53,12 +53,12 @@ export default function View() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function ViewDiv(props) {
-    setId(details[modalId].details.id);
-    setName(details[modalId].details.name);
-    setEmail(details[modalId].details.email);
-    setPassword(details[modalId].details.password);
+  setId(details[modalId].details.id);
+  setName(details[modalId].details.name);
+  setEmail(details[modalId].details.email);
+  setPassword(details[modalId].details.password);
 
+  function ViewDiv(props) {
     return (
       <Modal
         {...props}

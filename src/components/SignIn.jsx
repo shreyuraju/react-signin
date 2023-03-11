@@ -3,35 +3,29 @@ import { NavLink, useNavigate } from "react-router-dom";
 import SignInimg from "./SignInimg";
 
 export default function SignIn() {
+  //use of useNavigate is to navigate one Element to Another Element
   const history = useNavigate();
+
+  //Global variables
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [userData, setUserdata] = useState([]);
 
+  //cheking user data and logging in with local session
   const Check = (e) => {
     e.preventDefault();
     setUserdata(JSON.parse(localStorage.getItem("users")));
-
-    //console.log(userData);
-
     const userSignin = userData.filter((val, key) => {
-      //console.log(val.email);
-      //console.log(val.details.password);
-      
       return val.email === email && val.details.password === password;
     });
-    //console.log(userSignin)
 
     if (userSignin.length === 0) {
       alert("try again with valid details");
     } else {
       localStorage.setItem("usersignin", JSON.stringify(userSignin));
       history("/view"); //Navigating to details page using useNavigate
-      //alert("User Signed in Successfully")
     }
-
-    //console.log(userSignin);
   };
 
   return (
@@ -71,6 +65,7 @@ export default function SignIn() {
                 value="Reset"
               />
             </form>
+            {/* if user have no account, user can ahange page to sign-up */}
             <p className="mt-3">
               No Account{" "}
               <span>

@@ -7,7 +7,7 @@ import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import View from "./components/View";
 import Add from "./components/Add";
-
+//for routing elements using paths
 export default function Router() {
   return (
     <div>

@@ -1,5 +1,5 @@
 import React from "react";
-
+//Right Alighned image for sign-in and sign-up image
 export default function SignIn() {
   return (
     <>

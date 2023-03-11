@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-
+//Error page if user tries to give wrong path
 export default function Error() {
     const history = useNavigate();
   return (

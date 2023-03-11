@@ -3,12 +3,15 @@ import { NavLink } from "react-router-dom";
 import SignInimg from "./SignInimg";
 
 export default function SignUp() {
+
+  //initialization of variables using useState
   const [id, setId] = useState(0);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [conPass, setConpass] = useState("");
 
+  //gathering old data from localStirage
   let initValue;
 
   if (localStorage.getItem("users")) {
@@ -19,6 +22,7 @@ export default function SignUp() {
 
   const [value, setValue] = useState(initValue);
 
+  //inserting user data into localStorage with some Conditions
   const InsertValue = (e) => {
     e.preventDefault();
     if (password == conPass) {
@@ -42,6 +46,7 @@ export default function SignUp() {
     }
   };
 
+  //useEffect for updaing anying change in localStorage
   useEffect(() => {
     localStorage.setItem("users", JSON.stringify(value));
   }, [value]);
@@ -52,6 +57,7 @@ export default function SignUp() {
         <section className="d-flex justify-content-center">
           <div className="left_data mt-6 " style={{ width: "100%" }}>
             <h3 className="text-center col-lg-6">Sign-UP</h3>
+
             <form onSubmit={InsertValue}>
               <input
                 type="number"
@@ -107,6 +113,7 @@ export default function SignUp() {
                 value="Reset"
               />
             </form>
+            {/* if user is already signed-up he can sign-in */}
             <p className="mt-3">
               Already Signed-up <span><NavLink to="/signin">Sign-In</NavLink></span>
             </p>
