@@ -111,11 +111,8 @@ export default function View() {
           password: password,
         };
         let detail = { email: email, details };
-
         value[i]= detail
-
         setValue([...value])
-
         alert("Details Updated Successfully \nCLick on View Details Button");
       }
     };
