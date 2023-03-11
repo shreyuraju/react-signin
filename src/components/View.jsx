@@ -15,26 +15,10 @@ export default function View() {
     initValue = [];
   }
 
-  const [details, setDetails] = useState(initValue);
+  const [value, setValue] = useState(initValue);
 
   //history to navigate another page
   const history = useNavigate();
-
-  //login session
-  const [login, setLogin] = useState([]);
-
-  //checking user for login
-  const CheckUser = () => {
-    const getUser = localStorage.getItem("usersignin");
-    if (getUser && getUser.length) {
-      const user = JSON.parse(getUser);
-      setLogin(user);
-
-      if (login) {
-        setTimeout(() => {}, 3000);
-      }
-    }
-  };
 
   //user logout
   const userLogout = () => {
@@ -48,11 +32,6 @@ export default function View() {
 
   const [modalId, setModelid] = useState(0);
 
-  // setId(details[modalId].details.id);
-  // setName(details[modalId].details.name);
-  // setEmail(details[modalId].details.email);
-  // setPassword(details[modalId].details.password);
-
   function ViewDiv(props) {
     return (
       <Modal
@@ -63,7 +42,7 @@ export default function View() {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Details of {details[modalId].details.email}
+            Details of {value[modalId].details.email}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -78,10 +57,10 @@ export default function View() {
             </thead>
             <tbody>
               <tr>
-                <td>{details[modalId].details.id}</td>
-                <td>{details[modalId].details.name}</td>
-                <td>{details[modalId].details.email}</td>
-                <td>{details[modalId].details.password}</td>
+                <td>{value[modalId].details.id}</td>
+                <td>{value[modalId].details.name}</td>
+                <td>{value[modalId].details.email}</td>
+                <td>{value[modalId].details.password}</td>
               </tr>
             </tbody>
           </Table>
@@ -98,21 +77,8 @@ export default function View() {
     setModelid(i);
   };
 
-  const [id, setId] = useState(0);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   function EditDiv(props) {
-    let detailss = {
-      id: id,
-      name: name,
-      email: email,
-      password: password,
-    };
-    console.log(detailss);
-
-    const saveEdit = () => {
+    const saveEdit = (i) => {
       if (password.length < 4) {
         alert("passwaord should be more than 4 character ");
       } else {
@@ -124,17 +90,29 @@ export default function View() {
         };
         let detail = { email: email, details };
 
-        // details[modalId].push(detail)
-        // setDetails(JSON.parse(localStorage.setItem("users")));
-        console.log(detail);
-        // alert("Details Updated Successfully \nCLick on View Details Button");
+        //setValue([modalId, detail])
+
+        alert("Details Updated Successfully \nCLick on View Details Button");
       }
     };
 
-    setId(details[modalId].details.id);
-    setEmail(details[modalId].details.email);
-    setName(details[modalId].details.name);
-    setPassword(details[modalId].details.password);
+    const handleEditId = (v) => {
+      setId(v);
+    };
+    const handleEditName = (v) => {
+      setName(v);
+    };
+    const handleEditEmail = (v) => {
+      setEmail(v);
+    };
+    const handleEditPassword = (v) => {
+      setPassword(v);
+    };
+
+    const [id, setId] = useState(value[modalId].details.id);
+    const [name, setName] = useState(value[modalId].details.name);
+    const [email, setEmail] = useState(value[modalId].details.email);
+    const [password, setPassword] = useState(value[modalId].details.password);
 
     return (
       <Modal
@@ -145,7 +123,7 @@ export default function View() {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Edit : {details[modalId].details.email}
+            Edit : {value[modalId].details.email}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -164,36 +142,32 @@ export default function View() {
                   <EdiText
                     type="number"
                     id="eid"
-                    onChange={(e) => setId(e.target.value)}
                     value={id}
-                    onSave={() => setId(id)}
+                    onSave={handleEditId}
                   />
                 </td>
                 <td>
                   <EdiText
                     type="text"
                     id="ename"
-                    onChange={(e) => setName(e.target.value)}
                     value={name}
-                    onSave={(e) => e.onSave}
+                    onSave={handleEditName}
                   />
                 </td>
                 <td>
                   <EdiText
                     type="email"
                     id="eemail"
-                    onChange={(e) => setEmail(e.target.value)}
                     value={email}
-                    onSave={(e) => e.onSave}
+                    onSave={handleEditEmail}
                   />
                 </td>
                 <td>
                   <EdiText
                     type="password"
                     id="epass"
-                    onChange={(e) => setPassword(e.target.value)}
                     value={password}
-                    onSave={(e) => e.onSave}
+                    onSave={handleEditPassword}
                   />
                 </td>
               </tr>
@@ -201,8 +175,9 @@ export default function View() {
           </Table>
         </Modal.Body>
         <Modal.Footer>
-          <p>Change all the data</p>
+          {/* Button to Close */}
           <Button onClick={props.onHide}>Close</Button>
+          {/* Button to Submit */}
           <Button
             onClick={() => {
               saveEdit(modalId);
@@ -224,18 +199,36 @@ export default function View() {
     let flag;
     flag = prompt("Do you want to delete  " + email + " data\nType yes");
     if (flag === "yes") {
-      details.splice(i);
-      localStorage.setItem("users", JSON.stringify(details));
+      value.splice(i);
+      localStorage.setItem("users", JSON.stringify(value));
       history("/view");
     } else {
       alert("Enter Properly as 'yes'");
     }
   };
 
+  //login session
+  const [login, setLogin] = useState([]);
+
+  //checking user for login
+  const CheckUser = () => {
+    const getUser = localStorage.getItem("usersignin");
+    if (value.length > 0) {
+      if (getUser && getUser.length) {
+        const user = JSON.parse(getUser);
+        setLogin(user);
+
+        if (login) {
+          setTimeout(() => {}, 3000);
+        }
+      }
+    }
+  };
+
   useEffect(() => {
-    setDetails(JSON.parse(localStorage.getItem("users")));
+    localStorage.setItem("users", JSON.stringify(value));
     CheckUser();
-  }, []);
+  }, [value]);
 
   return (
     <>
@@ -252,7 +245,7 @@ export default function View() {
                     </Button>
                   </Link>
                 </td>
-                <td colSpan="6">Total :{details.length}</td>
+                <td colSpan="6">Total :{value.length}</td>
 
                 <td>
                   <Button variant="secondary" size="sm" onClick={userLogout}>
@@ -273,9 +266,9 @@ export default function View() {
               </tr>
             </thead>
             <tbody>
-              {details && details.length <= 0
-                ? "NO data"
-                : details.map((item, index) => {
+              {value && value.length <= 0
+                ? "<>NO DATA</>"
+                : value.map((item, index) => {
                     return (
                       <tr key={index}>
                         <td>{index + 1}</td>
@@ -333,7 +326,7 @@ export default function View() {
           </div>
         </>
       ) : (
-        "error"
+        "ERROR User No Login Details"
       )}
     </>
   );

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import SignInimg from "./SignInimg";
 
 export default function SignUp() {
+
+  const history = useNavigate();
 
   //initialization of variables using useState
   const [id, setId] = useState(0);
@@ -26,7 +28,7 @@ export default function SignUp() {
   const InsertValue = (e) => {
     e.preventDefault();
     if (password === conPass) {
-      if(password.length<4 && conPass.length<4){
+      if(password.length<3 && conPass.length<3){
         alert("passwaord should be more than 4 character ")
       } else {
         let details = {
@@ -37,7 +39,8 @@ export default function SignUp() {
         };
         let detail = {email:email, details} 
         setValue([...value, detail]);
-        
+        alert("Signed-Up successfully")
+        //history("/signin")
         console.log(value);
       }
       
